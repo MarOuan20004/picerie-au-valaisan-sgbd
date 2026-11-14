@@ -1,0 +1,43 @@
+name: CI - Compilation & Validation
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    name: Build & Test (Java ${{ matrix.java-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java-version: [ '17', '21' ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ matrix.java-version }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java-version }}
+          cache: 'maven'
+
+      - name: Validate Maven build
+        run: mvn -B compile
+
+      - name: Validate standalone Makefile compilation
+        run: |
+          make clean
+          make compile
+
+      - name: Verify SQL scripts integrity
+        run: |
+          test -f sql/creation_insertion/schema.sql
+          test -f sql/fonctionnalite/passer_commande.sql
+          test -f sql/fonctionnalite/declarer_perte.sql
+          test -f sql/fonctionnalite/cloturer_commande.sql
+          test -f sql/fonctionnalite/alertes_peremption.sql
+          echo "All SQL deliverable scripts are present."
