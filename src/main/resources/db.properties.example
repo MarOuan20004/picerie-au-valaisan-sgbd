@@ -1,0 +1,10 @@
+# Configuration de connexion Oracle Database
+# Copiez ce fichier en tant que 'db.properties' (ignore par git) ou 'config.properties'
+# Vous pouvez egalement definir les variables d'environnement correspondantes :
+# export ORACLE_URL="jdbc:oracle:thin:@oracle1.ensimag.fr:1521:oracle1"
+# export ORACLE_USER="votre_login"
+# export ORACLE_PASSWORD="votre_password"
+
+db.url=jdbc:oracle:thin:@oracle1.ensimag.fr:1521:oracle1
+db.user=votre_login_ensimag
+db.password=votre_mot_de_passe
